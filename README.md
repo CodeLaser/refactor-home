@@ -12,7 +12,7 @@ Components:
 
 Prerequisites:
 
-1. ensure you have at least a JDK 17 installed, and `mvn` or `gradle` either installed or present in your project. The ref server will be referring to jars in your local Maven repository (typically `~/.m2`)
+1. ensure you have at least a JDK 17 installed, and `mvn` or `gradle` either installed or present in your project. The ref server will be referring to jars in your local Maven repository (typically `~/.m2`). The plugins assume that your project's source code management system is Git.
 2. an `Ollama` running locally, with the "nomic-embed-text" embedding model loaded
 3. Docker locally installed
 
