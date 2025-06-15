@@ -36,3 +36,8 @@ How it works:
 * You decide about pushing or pulling the code held in the copy.
 * The `copy` plugin must be used when the project's dependencies change.
 * You decide when it is time to update the docstrings.
+
+Main limitations
+
+* only support for mvn, gradle
+* only JUnit tests are executed during validation of a refactoring
