@@ -27,7 +27,10 @@ The REST calls can be grouped into a number of families of calls:
 
 All modification actions need to be either **accepted** or **rejected**.
 The former corresponds to merging that action's branch into the default branch.
-Rejection simply moves the server
+Rejection simply moves the server back to the default branch.
+
+Any change is also written to `refactor.log`, a centrally held file that details changes made by the server.
+
 
 Basic flow
 ----------
@@ -39,6 +42,22 @@ This call will kick off project parsing and analysis in the background. Most que
 HTTP status 423, LOCKED) while this takes place.
 
 Once the project has been analyzed, queries will be accepted.
+
+The resulting `Response` object of a rename request, for example `/request/renameLv`, contains
+
+* conflicts and warnings
+* source diffs: a report on what has changed
+* a run identifier
+
+Use this run identifier to accept the changes: `/run/accept/{project}/{run id}`.
+This will switch the server back to the default branch, and merge in the changes made by the rename request.
+
+Alternatively, you can reject the changes using `/run/reject/{project name}/{run id}`.
+This simply moves the server back to the default branch.
+
+When doing a lot of testing, you can reset using `/run/reset/{project name}/{run id}`. This call removes the rename
+request's branch so that the branch name can be reused over and over again, switches the server back to the commit
+before the request's action, and cleans up any lingering changes (using `git reset` and `git restore`).
 
 
 File system layout
