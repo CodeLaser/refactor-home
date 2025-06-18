@@ -1,2 +1,4 @@
 
-Copyright (C) CodeLaser 2022-2025. All rights reserved.
+Copyright (C) CodeLaser BV, Belgium, 2022-2025. All rights reserved.
+This source code is licensed under a commercial license.
+Unauthorized use, reproduction, or distribution is prohibited.

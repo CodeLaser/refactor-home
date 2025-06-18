@@ -3,15 +3,14 @@ The Maven and Gradle plugins
 
 The Maven and Gradle plugins behave very similarly, and require essentially the same input, albeit in different formats:
 
-* the plugin repository (CodeLaser's at Amazon AWS CodeArtifact)
-* the plugin, and parameters to the plugin
-* the dependency for the docstring annotations
-* a CodeArtifact auth token, which is generally valid for 24h only, so it must be read from a secure place that is easy to update.
+* the location of CodeLaser's plugin repository
+* activation of the plugin, and parameters to the plugin
+* a reference to the Java JAR for the docstring annotations
+* a CodeArtifact auth token, which is generally valid for 24h only, so it must be read from a secure place that is easy
+  to update.
 
-
-
-Editing your `pom.xml` file
----------------------------
+Maven: editing the `pom.xml` file
+---------------------------------
 
 Add the following block to the main section (or add to the existing `pluginRepositories` section, if you already have
 one):
@@ -20,9 +19,9 @@ one):
 
 <pluginRepositories>
     <pluginRepository>
-        <id>codeartifact</id>
-        <name>codeartifact</name>
-        <url>https://codelaser-975050168225.d.codeartifact.eu-central-1.amazonaws.com/maven/CodeLaser</url>
+        <id>CodeLaser-public</id>
+        <name>Public CodeLaser repository</name>
+        <url>https://codelaser-975050168225.d.codeartifact.eu-central-1.amazonaws.com/maven/CodeLaser-public</url>
     </pluginRepository>
 </pluginRepositories>
 ```
@@ -39,7 +38,7 @@ Add the following block to the `pluginManagement/plugins` section (or create one
         <projectsDir>${env.REFACTOR_HOME}/projects</projectsDir>
         <projectName>your-project-name</projectName>
         <modificationAnalysis>false</modificationAnalysis>
-        <docker>false</docker>
+        <docker>true</docker>
         <branch>master</branch>
     </configuration>
 </plugin>
@@ -66,7 +65,7 @@ You'll need a `settings.xml` file in your local `~/.m2` repository:
 <settings>
     <servers>
         <server>
-            <id>codeartifact</id>
+            <id>CodeLaser-public</id>
             <username>aws</username>
             <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
         </server>
@@ -74,33 +73,40 @@ You'll need a `settings.xml` file in your local `~/.m2` repository:
 </settings>
 ```
 
-Editing your Gradle files
--------------------------
+This setup assumes that the environment variable `CODEARTIFACT_AUTH_TOKEN` points to the authorization token obtained
+for CodeLaser's CodeArtifact repository.
 
-We detail the situation here for `.kts` files.
 
-A `pluginManagement` block in the`settings.gradle.kts` file:
+Editing Gradle files
+--------------------
+
+We detail the situation here for `.kts` files; Groovy versions are very similar.
+
+A `pluginManagement` block in the`settings.gradle.kts` file defines the location for CodeLaser's CodeArtifact
+repository:
 
 ```kotlin
 pluginManagement {
     val codeartifactToken: String by settings
 
     repositories {
-        mavenLocal()
         maven {
-            url = uri("https://codelaser-975050168225.d.codeartifact.eu-central-1.amazonaws.com/maven/CodeLaser")
+            url = uri("https://codelaser-975050168225.d.codeartifact.eu-central-1.amazonaws.com/maven/CodeLaser-public")
             credentials {
                 username = "aws"
                 password = codeartifactToken
             }
         }
-        mavenCentral()
     }
 }
 ```
 
 This assumes that the Gradle property `codeartifactToken` is set in one of your gradle property files, or passed on on
-the command line.
+the command line. Alternatively, the password can be read from an environment variable, using
+
+```kotlin
+password = System.getenv("CODEARTIFACT_AUTH_TOKEN")
+```
 
 The `plugins` section of `build.gradle.kts`:
 
@@ -152,6 +158,9 @@ Options:
 * `projectsDir`
 * `modificationAnalysis`
 * `branch`: the Git branch that the refactor server will default at startup, or after a reset
+
+The copy task will generate an `inputConfiguration.json` file, by default written to the `target` (mvn) or `build/` (
+gradle) directory.
 
 The `generate-docstrings` goal/task
 -----------------------------------
