@@ -54,10 +54,34 @@ The images are named
 975050168225.dkr.ecr.eu-central-1.amazonaws.com/codelaser/refactor-mcp:202506131500
 ```
 
+with varying date extensions.
+
+
 Starting the Docker images
 --------------------------
 
 Using the `compose.yml` file, run
 ```shell
 docker-compose -f compose.yml --env-file compose.env up 
+```
+
+
+Adding the MCP server to Claude Desktop app
+-------------------------------------------
+
+Copy the following JSON block into (Mac)
+```
+~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
+to register the MCP server:
+```json
+{
+  "mcpServers": {
+    "Refserver shttp": {
+      "command": "npx",
+      "args": ["mcp-remote", "http://127.0.0.1:8081/mcp"]
+    }
+  },
+  "globalShortcut": ""
+}
 ```

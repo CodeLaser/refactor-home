@@ -32,6 +32,7 @@ Main installation steps:
    an `inputConfiguration.yml` file that describes all the project's dependencies for the refactor server to read
 6. login to AWS ECR and pull the refactor server images
 7. start the refactor server using the `compose.yml` file and `docker-compose`
+8. add the MCP server to your AI client
 
 How it works:
 
