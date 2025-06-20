@@ -12,7 +12,7 @@ export REFACTOR_HOME="$PWD/refactor-home"
 ```
 
 The environment variable `REFACTOR_HOME` will be used by the Maven/Gradle plugin to determine where to make a copy of
-the source project.
+the source project, and by the Docker `compose.yml` file to mount volumes.
 
 Access to AWS CodeArtifact
 --------------------------
@@ -57,4 +57,7 @@ The images are named
 Starting the Docker images
 --------------------------
 
-The `compose.yml` file.
+Using the `compose.yml` file, run
+```shell
+docker-compose -f compose.yml --env-file compose.env up 
+```

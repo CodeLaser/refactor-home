@@ -1,0 +1,20 @@
+services:
+  
+  refactor-rest:
+    image: ${REFACTOR_REST_IMAGE}
+    container_name: refactor-rest
+    ports:
+      - ${REFACTOR_REST_EXTERNAL_PORT}:8080
+    volumes:
+      - ${REFACTOR_HOME}/projects:/home/ubuntu/projects
+      - ${REFACTOR_HOME}/refactor-rest/application.properties:/home/ubuntu/application.properties
+
+  refactor-mcp:
+    image: ${REFACTOR_MCP_IMAGE}
+    container_name: refactor-mcp
+    ports:
+      - ${REFACTOR_MCP_EXTERNAL_PORT}:8080
+    environment:
+      - REFACTOR_REST_URL=http://refactor-rest:${REFACTOR_REST_EXTERNAL_PORT}
+      - SWAGGER_URL=http://refactor-rest:${REFACTOR_REST_EXTERNAL_PORT}
+      - SWAGGER_SPEC_PATH=/swagger/refactor-rest-0.0.1.yml

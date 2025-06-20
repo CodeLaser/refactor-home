@@ -5,8 +5,8 @@ Components:
 
 1. the `refactor-home` directory, to be cloned from CodeLaser's GitHub page. This is the README file for this directory.
 2. a Docker image `codelaser/refactor-rest:latest`, hosted at Amazon AWS's Elastic Container Registry, which contains
-   the refactoring server (a Java Micronaut application)
-3. a Docker image `codelaser/refactor-mcp:latest`, which contains the MCP server (a Python application)
+   the refactor REST server (a Java Micronaut application)
+3. a Docker image `codelaser/refactor-mcp:latest`, which contains the refactor MCP server (a Python application)
 4. access to a Maven and/or Gradle plugin to install your project into the `refactor-home/projects` directory. The
    plugin is hosted on AWS's CodeArtifact.
 5. access to a small support Jar that contains the annotations that hold the docstrings in your code. Also available on
@@ -14,9 +14,9 @@ Components:
 
 Prerequisites:
 
-1. ensure you have at least a JDK 17 installed, and `mvn` or `gradle` either installed or present in your project. The
-   ref server will be referring to jars in your local Maven repository (typically `~/.m2`). The plugins assume that your
-   project's source code management system is Git.
+1. ensure you have at least a JDK 17 installed, and `mvn` or `gradle` either installed or present as a wrapper in your
+   project. The REST server will be referring to jars in your local Maven repository (typically `~/.m2`). The
+   plugins assume that your project's source code management system is Git.
 2. an `Ollama` running locally, with the "nomic-embed-text" embedding model loaded
 3. Docker locally installed
 
